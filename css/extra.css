@@ -1,0 +1,21 @@
+:root {
+    --md-admonition-icon--cs3: url('../images/logo/logo.svg')
+}
+
+.md-typeset .admonition.cs3,
+.md-typeset details.cs3 {
+    border-color: rgb(80, 105, 149);
+}
+
+.md-typeset .cs3 > .admonition-title,
+.md-typeset .cs3 > summary {
+    background-color: rgba(80, 105, 149, 0.1);
+}
+
+.md-typeset .cs3 > .admonition-title::before,
+.md-typeset .cs3 > summary::before {
+    /*background-color: rgb(213,187,68);*/
+    background-image: linear-gradient(#F1E47E, #96A9C6);
+    -webkit-mask-image: var(--md-admonition-icon--cs3);
+    mask-image: var(--md-admonition-icon--cs3);
+}
