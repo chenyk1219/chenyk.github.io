@@ -22,9 +22,6 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#server">
-          跳转至
-        </a>
 </div>
 <div data-md-component="announce">
 </div>
@@ -459,6 +456,7 @@
 </div>
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
+<h1>部署django</h1>
 <div class="highlight"><pre><span></span><code><span class="k">[uwsgi]</span>
 <span class="na">socket</span><span class="o">=</span><span class="s">uwsgi.sock</span>
 <span class="na">chdir</span><span class="o">=</span><span class="s">/data/unified-auth</span>
@@ -470,78 +468,83 @@
 <span class="na">daemonize</span><span class="o">=</span><span class="s">uwsgi.log</span>
 <span class="na">processes</span><span class="o">=</span><span class="s">8</span>
 </code></pre></div>
-<p>```nginx configuration</p>
-<h1 id="server">server {<a class="headerlink" href="#server" title="Permanent link">¶</a></h1>
-<h1 id="listen-80-default_server">listen       80 default_server;<a class="headerlink" href="#listen-80-default_server" title="Permanent link">¶</a></h1>
-<h1 id="server_name-_">server_name  _;<a class="headerlink" href="#server_name-_" title="Permanent link">¶</a></h1>
-<h1 id="access_log-off">access_log   off;<a class="headerlink" href="#access_log-off" title="Permanent link">¶</a></h1>
-<h1 id="return-444">return       444;<a class="headerlink" href="#return-444" title="Permanent link">¶</a></h1>
-<h1 id="_1">}<a class="headerlink" href="#_1" title="Permanent link">¶</a></h1>
-<p>server {
+<div class="highlight"><pre><span></span><code>#server {
+#    listen       80 default_server;
+#    server_name  _;
+#    access_log   off;
+#    return       444;
+#}
+
+server {
         listen       80;
-        server_name  xxxxxxx;</p>
-<pre><code>    #if ($allowed_country = no) {
-         # return https://www.baidu.com;
-         # return /home/japan;
-    #     return 444;
-    #}
+        server_name  xxxxxxx;
 
-    location / {
-        include  uwsgi_params;
-        #uwsgi_modifier1 72;
-        uwsgi_pass  unix:/data/unified-auth/uwsgi.sock;
-        uwsgi_param UWSGI_SCRIPT backend.wsgi;
-        uwsgi_param UWSGI_CHDIR /data/unified-auth;
-        index  index.html index.htm;
-        client_max_body_size 35m;
-        access_log logs/uwsgi.log;
-        error_log  logs/uwsgi.error error;
-    }
+        #if ($allowed_country = no) {
+             # return https://www.baidu.com;
+             # return /home/japan;
+        #     return 444;
+        #}
 
-   location /static {
-    alias /data/unified-auth/backend/static;
-  }
-</code></pre>
-<p>}</p>
-<p>server {
+        location / {
+            include  uwsgi_params;
+            #uwsgi_modifier1 72;
+            uwsgi_pass  unix:/data/unified-auth/uwsgi.sock;
+            uwsgi_param UWSGI_SCRIPT backend.wsgi;
+            uwsgi_param UWSGI_CHDIR /data/unified-auth;
+            index  index.html index.htm;
+            client_max_body_size 35m;
+            access_log logs/uwsgi.log;
+            error_log  logs/uwsgi.error error;
+        }
+
+       location /static {
+        alias /data/unified-auth/backend/static;
+      }
+}
+
+
+server {
     listen   80;
-    server_name xxxxxxx;</p>
-<pre><code>client_max_body_size    1024m;
-client_body_buffer_size 512k;
-proxy_connect_timeout 1800;
-proxy_read_timeout 1800;
-proxy_send_timeout 1800;
-proxy_buffer_size 128k;
-proxy_buffers  32 128k;
-proxy_busy_buffers_size 128k;
-proxy_temp_file_write_size 512k;
+    server_name xxxxxxx;
 
-gzip on;
-gzip_buffers 4 16k;
-gzip_http_version 1.0;
-gzip_comp_level 5;
-gzip_vary on;
-charset utf-8,gbk;
-access_log zkmlops.log;
-error_log zkmlops.log error;
 
-root html/dist;
-location  / {
-   index index.html;
-   try_files $uri $uri/ /index.html;
-</code></pre>
-<p>}</p>
-<p>location /api {
+    client_max_body_size    1024m;
+    client_body_buffer_size 512k;
+    proxy_connect_timeout 1800;
+    proxy_read_timeout 1800;
+    proxy_send_timeout 1800;
+    proxy_buffer_size 128k;
+    proxy_buffers  32 128k;
+    proxy_busy_buffers_size 128k;
+    proxy_temp_file_write_size 512k;
+
+    gzip on;
+    gzip_buffers 4 16k;
+    gzip_http_version 1.0;
+    gzip_comp_level 5;
+    gzip_vary on;
+    charset utf-8,gbk;
+    access_log zkmlops.log;
+    error_log zkmlops.log error;
+
+    root html/dist;
+    location  / {
+       index index.html;
+       try_files $uri $uri/ /index.html;
+   }
+
+   location /api {
         rewrite  ^.+api/?(.*)$ /$1 break;
         proxy_pass  http://api.it.izkml.cn;
         proxy_cookie_domain domino.server nginx.server;
         proxy_buffering off;
-    }</p>
-<p>location /static {
+    }
+
+ location /static {
         alias /data/unified-auth/backend/static;
       }
 }
-```</p>
+</code></pre></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
