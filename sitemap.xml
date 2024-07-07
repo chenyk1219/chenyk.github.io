@@ -76,6 +76,16 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://www.inextops.com/nginx/django/</loc>
+         <lastmod>2024-07-07</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://www.inextops.com/nginx/ftp/</loc>
+         <lastmod>2024-07-07</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://www.inextops.com/python/data_type/</loc>
          <lastmod>2024-07-07</lastmod>
          <changefreq>daily</changefreq>
