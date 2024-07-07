@@ -535,7 +535,7 @@ server {
 
    location /api {
         rewrite  ^.+api/?(.*)$ /$1 break;
-        proxy_pass  http://api.it.izkml.cn;
+        proxy_pass  http://xxxxxx;
         proxy_cookie_domain domino.server nginx.server;
         proxy_buffering off;
     }
